@@ -1,5 +1,18 @@
 # ACME company project (DesignTechnologies Interview Task)
 
+## Dependencies used:
+
+- create-react-app (react v18)
+- typescript
+- eslint (typescript)
+- prettier (formatting)
+- sass
+- jest
+
+### State Management
+
+Custom using _React Context API_ and _useReducer_
+
 ## Requirements covered:
 
 - [x] Create an employee board that displays all employees.
