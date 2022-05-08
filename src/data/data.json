@@ -1,0 +1,55 @@
+{
+  "organization": {
+    "name": "Acme",
+    "departments": [
+      {
+        "id": 1,
+        "name": "Managers"
+      },
+      {
+        "id": 2,
+        "name": "Operators"
+      }
+    ],
+    "employees": [
+      {
+        "id": 1,
+        "name": "Liam",
+        "department": 1,
+        "avatar": "https://pickaface.net/gallery/avatar/65542417_160907_2327_c84e.png"
+      },
+      {
+        "id": 6,
+        "name": "Joana",
+        "department": 2,
+        "avatar": "https://pickaface.net/gallery/avatar/20120420_191302_2621_joana.png"
+      },
+
+      {
+        "id": 2,
+        "name": "Nani",
+        "department": null,
+        "avatar": "https://pickaface.net/gallery/avatar/20130415_201320_2877_nani.png"
+      },
+      {
+        "id": 3,
+        "name": "Noah",
+        "department": 2,
+        "avatar": "https://pickaface.net/gallery/avatar/20131126_070516_4159_awesome.png"
+      },
+      {
+        "id": 4,
+        "name": "Ava",
+        "department": null,
+        "avatar": "https://pickaface.net/gallery/avatar/kazza2085558404d6cd03d.png"
+      },
+
+      {
+        "id": 5,
+        "name": "Mellors",
+        "department": 1,
+        "avatar": "https://pickaface.net/gallery/avatar/20130215_053757_3968_MissMellors.png"
+      }
+    ]
+  }
+}
