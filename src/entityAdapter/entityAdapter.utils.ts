@@ -88,7 +88,6 @@ export const addMany: Executor = (state, payload) => {
  */
 export const update: Executor = (state, payload) => {
   const result = [...state];
-
   if (payload && !Array.isArray(payload)) {
     const index = result.findIndex((x) => x.id === payload.id);
     if (index === -1) throw Error('[update] Bad action - attempting to update missing entity');

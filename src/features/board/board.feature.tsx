@@ -64,7 +64,9 @@ export const Board: FC = () => {
   );
 
   const filteredDepartments = useMemo(() => {
-    return filteredDepartment ? [filteredDepartment] : departments;
+    // fetch and find the department obj from reducer since `filteredDepartment` references an entirely different object
+    const filtered = departments.find((x) => x.id === filteredDepartment?.id);
+    return filtered ? [filtered] : departments;
   }, [filteredDepartment, departments]);
 
   const onClearAll = useCallback(() => {

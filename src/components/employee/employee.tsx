@@ -17,7 +17,12 @@ export const Employee: FC<EmployeeProps> = ({ data, onClick }) => (
     className={classNames(styles.container, data.selected && styles.selected)}
   >
     <div className={styles.avatarContainer}>
-      <Checkbox aria-checked={data.selected} className={styles.checkbox} checked={data.selected} />
+      <Checkbox
+        readOnly
+        aria-checked={data.selected}
+        className={styles.checkbox}
+        checked={data.selected}
+      />
       <img
         className={styles.avatar}
         alt={`${data.name}'s avatar image`}
