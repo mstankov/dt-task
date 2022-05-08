@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  padding: 1rem;
+
+  border: 1px dashed black;
+
+  & .header {
+    align-self: flex-start;
+    display: flex;
+
+    & .checkbox {
+      margin-left: 10px;
+    }
+  }
+
+  &.selected {
+    border-style: solid;
+    border-color: rgba(14, 165, 0, 0.6);
+  }
+
+  & .name {
+    color: black;
+    margin: 0 0 5px 0;
+    align-self: flex-start;
+  }
+
+  & .employees {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+
+    & > div:not(:first-of-type) {
+      margin-left: 1rem;
+    }
+  }
+}

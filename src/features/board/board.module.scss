@@ -1,0 +1,36 @@
+.container {
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & .name {
+    letter-spacing: 10px;
+  }
+
+  & .button {
+    background-color: rgba(14, 165, 0, 0.6);
+  }
+
+  & .departmentsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    & > div:not(:first-of-type) {
+      margin-top: 30px;
+    }
+  }
+
+  & .filtersContainer {
+    display: flex;
+    flex-direction: row;
+
+    & > *:not(:first-child) {
+      margin-left: 20px;
+    }
+
+    margin-bottom: 20px;
+  }
+}

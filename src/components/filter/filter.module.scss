@@ -1,0 +1,94 @@
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    transform: translate(5px, 5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+.container {
+  position: relative;
+  box-sizing: border-box;
+  width: 200px;
+  height: 35px;
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border: 1px solid black;
+  background: gray;
+  cursor: pointer;
+  transition: background-color 0.5s;
+
+  &:hover {
+    background-color: darkgray;
+  }
+
+  & > .label {
+    margin-right: 10px;
+    font-size: 0.9em;
+    color: white;
+  }
+
+  & > .value {
+    width: 60%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  & > .dropdown {
+    padding: 0;
+    list-style: none;
+    border: 1px solid black;
+    opacity: 0;
+    position: absolute;
+    top: 25px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    max-height: 120px;
+    overflow: auto;
+    z-index: -1;
+
+    transition: opacity 0.5s;
+
+    &.visible {
+      animation: reveal 0.2s ease-in 0s 1 forwards;
+      z-index: 1000;
+    }
+  }
+
+  &.selected {
+    & .clear {
+      visibility: initial;
+    }
+  }
+
+  & > .clear {
+    visibility: hidden;
+    padding: 3px;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+  }
+}
+
+.filterOption {
+  cursor: pointer;
+  padding: 0.3rem;
+  background: gray;
+  color: white;
+  transition: 0.3s;
+  &.active {
+    background: lightgreen;
+  }
+
+  &:hover {
+    background-color: aquamarine;
+  }
+}

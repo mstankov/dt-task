@@ -1,0 +1,13 @@
+html,
+body {
+  background-color: lightgray;
+
+  & > #root {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+hr {
+  width: 100%;
+}
