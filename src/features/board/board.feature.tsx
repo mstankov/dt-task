@@ -20,16 +20,21 @@ export const Board: FC = () => {
     return groupEmployeesByDepartmentId(employees);
   }, [employees]);
 
-  // Update department as selected in case its corresponding employees all are selected
+  // Update department as selected in case its corresponding employees all are selected and vice versa
   useEffect(() => {
     Object.keys(groupedEmployees).forEach((id) => {
       const depId = Number(id);
       const employees = groupedEmployees[depId];
+      const dep = departments.find((x) => x.id === depId);
 
-      if (employees.every((x) => x.selected)) {
-        const dep = departments.find((x) => x.id === depId);
-        if (dep) {
+      const allEmpSelected = employees.every((x) => x.selected);
+      const isDepSelected = dep?.selected;
+
+      if (dep) {
+        if (allEmpSelected && !isDepSelected) {
           departmentDispatcher('update', markSelected(dep, true));
+        } else if (!allEmpSelected && dep.selected) {
+          departmentDispatcher('update', markSelected(dep, false));
         }
       }
     });
