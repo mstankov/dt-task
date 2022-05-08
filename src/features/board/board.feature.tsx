@@ -20,6 +20,21 @@ export const Board: FC = () => {
     return groupEmployeesByDepartmentId(employees);
   }, [employees]);
 
+  // Update department as selected in case its corresponding employees all are selected
+  useEffect(() => {
+    Object.keys(groupedEmployees).forEach((id) => {
+      const depId = Number(id);
+      const employees = groupedEmployees[depId];
+
+      if (employees.every((x) => x.selected)) {
+        const dep = departments.find((x) => x.id === depId);
+        if (dep) {
+          departmentDispatcher('update', markSelected(dep, true));
+        }
+      }
+    });
+  }, [groupedEmployees]);
+
   // Click handlers
   const onSelectAll = useCallback(() => {
     employeeDispatcher('updateMany', markSelectedAll(employees, true));
@@ -34,6 +49,7 @@ export const Board: FC = () => {
 
   const onDepartmentClick = useCallback(
     (department: TDepartment) => {
+      debugger;
       departmentDispatcher('update', markSelected(department, !department.selected));
       employeeDispatcher(
         'updateMany',
@@ -68,21 +84,6 @@ export const Board: FC = () => {
   const isSelectAllDisabled = useMemo(() => {
     return employees.every((x) => x.selected);
   }, [employees]);
-
-  // Listeners
-  useEffect(() => {
-    Object.keys(groupedEmployees).forEach((id) => {
-      const depId = Number(id);
-      const employees = groupedEmployees[depId];
-
-      if (employees.every((x) => x.selected)) {
-        const dep = departments.find((x) => x.id === depId);
-        if (dep) {
-          departmentDispatcher('update', markSelected(dep, true));
-        }
-      }
-    });
-  }, [groupedEmployees]);
 
   return (
     <div className={styles.container}>

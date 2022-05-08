@@ -1,6 +1,6 @@
 import { BaseEntity } from '../../entityAdapter/entityAdapter.utils';
 import { NULL_DATA_ID } from '../../shared/constants';
-import { Employee } from '../../shared/types';
+import { Employee, Selected } from '../../shared/types';
 
 /**
  * Groups employees by department ID
@@ -26,7 +26,7 @@ export const groupEmployeesByDepartmentId = (employees: Employee[]) => {
   );
 };
 
-export const markSelected = <T extends BaseEntity>(entity: T, selected: boolean): T => ({
+export const markSelected = <T extends BaseEntity>(entity: T, selected: boolean): T & Selected => ({
   ...entity,
   selected,
 });
@@ -35,5 +35,7 @@ export const markSelected = <T extends BaseEntity>(entity: T, selected: boolean)
  * @param entities Entities
  * @returns Updated entities
  */
-export const markSelectedAll = <T extends BaseEntity>(entities: T[], selected: boolean): T[] =>
-  entities.map((x) => markSelected(x, selected));
+export const markSelectedAll = <T extends BaseEntity>(
+  entities: T[],
+  selected: boolean
+): (T & Selected)[] => entities.map((x) => markSelected(x, selected));
