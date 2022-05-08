@@ -49,7 +49,6 @@ export const Board: FC = () => {
 
   const onDepartmentClick = useCallback(
     (department: TDepartment) => {
-      debugger;
       departmentDispatcher('update', markSelected(department, !department.selected));
       employeeDispatcher(
         'updateMany',
