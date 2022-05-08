@@ -2,14 +2,14 @@
 
 ## Requirements covered:
 
-[x] Create an employee board that displays all employees.
-[x] The board should display the organization name and departments.
-[x] Every department section should display associated employees.
-[x] Information for the employee should be a card and display an image and name.
-[x] The User should be able to filter employees by department.
-[x] The User should be able to select an individual employee.
-[x] The User should be able to select all employees in a department.
-[x] The User should be able to select all employees in the organization.
+- [x] Create an employee board that displays all employees.
+- [x] The board should display the organization name and departments.
+- [x] Every department section should display associated employees.
+- [x] Information for the employee should be a card and display an image and name.
+- [x] The User should be able to filter employees by department.
+- [x] The User should be able to select an individual employee.
+- [x] The User should be able to select all employees in a department.
+- [x] The User should be able to select all employees in the organization.
 
 # HOW TO SETUP AND START PROJECT
 
