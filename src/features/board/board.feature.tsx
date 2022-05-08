@@ -20,6 +20,21 @@ export const Board: FC = () => {
     return groupEmployeesByDepartmentId(employees);
   }, [employees]);
 
+  // Update department as selected in case its corresponding employees all are selected
+  useEffect(() => {
+    Object.keys(groupedEmployees).forEach((id) => {
+      const depId = Number(id);
+      const employees = groupedEmployees[depId];
+
+      if (employees.every((x) => x.selected)) {
+        const dep = departments.find((x) => x.id === depId);
+        if (dep) {
+          departmentDispatcher('update', markSelected(dep, true));
+        }
+      }
+    });
+  }, [groupedEmployees]);
+
   // Click handlers
   const onSelectAll = useCallback(() => {
     employeeDispatcher('updateMany', markSelectedAll(employees, true));
@@ -49,7 +64,9 @@ export const Board: FC = () => {
   );
 
   const filteredDepartments = useMemo(() => {
-    return filteredDepartment ? [filteredDepartment] : departments;
+    // fetch and find the department obj from reducer since `filteredDepartment` references an entirely different object
+    const filtered = departments.find((x) => x.id === filteredDepartment?.id);
+    return filtered ? [filtered] : departments;
   }, [filteredDepartment, departments]);
 
   const onClearAll = useCallback(() => {
@@ -68,21 +85,6 @@ export const Board: FC = () => {
   const isSelectAllDisabled = useMemo(() => {
     return employees.every((x) => x.selected);
   }, [employees]);
-
-  // Listeners
-  useEffect(() => {
-    Object.keys(groupedEmployees).forEach((id) => {
-      const depId = Number(id);
-      const employees = groupedEmployees[depId];
-
-      if (employees.every((x) => x.selected)) {
-        const dep = departments.find((x) => x.id === depId);
-        if (dep) {
-          departmentDispatcher('update', markSelected(dep, true));
-        }
-      }
-    });
-  }, [groupedEmployees]);
 
   return (
     <div className={styles.container}>

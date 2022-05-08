@@ -6,7 +6,7 @@
 
   padding: 1rem;
 
-  border: 1px dashed black;
+  border: 1px dashed var(--black);
 
   & .header {
     align-self: flex-start;
@@ -19,7 +19,7 @@
 
   &.selected {
     border-style: solid;
-    border-color: rgba(14, 165, 0, 0.6);
+    border-color: var(--green);
   }
 
   & .name {

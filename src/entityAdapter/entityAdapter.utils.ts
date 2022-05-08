@@ -15,81 +15,127 @@ export type EntityStateReducer<T extends BaseEntity> = [
 ];
 
 /**
+ * Adds provided entity to state and returns updated state
+ * @param state Reducer State
+ * @param payload Action Payload
+ * @returns Updated State
+ */
+export const add: Executor = (state, payload) => {
+  const result = [...state];
+
+  if (payload && !Array.isArray(payload)) {
+    const index = result.findIndex((x) => x.id === payload.id);
+
+    if (index > -1) throw Error('[add] Bad action - attempting to add already existing entity');
+
+    result.push(payload);
+  }
+
+  return result;
+};
+
+/**
+ * Adds provided entity to state and returns updated state
+ * @param state Reducer State
+ * @param payload Action Payload
+ * @returns Updated State
+ */
+export const remove: Executor = (state, payload) => {
+  const result = [...state];
+
+  if (payload && !Array.isArray(payload)) {
+    const index = result.findIndex((x) => x.id === payload.id);
+
+    if (index === -1) throw Error('[remove] Bad action - attempting to remove missing entity');
+
+    result.splice(index, 1);
+  }
+
+  return result;
+};
+
+/**
+ * Clears state of all entities and returns updated state
+ * @param state Reducer State
+ * @returns Updated State
+ */
+export const clear: Executor = (state) => {
+  const result = [...state];
+  result.splice(0, result.length);
+  return result;
+};
+
+/**
+ * Adds provided entities to state and returns updated state
+ * @param state Reducer State
+ * @param payload Action Payload
+ * @returns Updated State
+ */
+export const addMany: Executor = (state, payload) => {
+  if (payload && Array.isArray(payload)) {
+    const result = [...state, ...payload];
+    return result;
+  }
+
+  return state;
+};
+
+/**
+ * Updates provided entity and returns updated state
+ * @param state Reducer State
+ * @param payload Action Payload
+ * @returns Updated State
+ */
+export const update: Executor = (state, payload) => {
+  const result = [...state];
+  if (payload && !Array.isArray(payload)) {
+    const index = result.findIndex((x) => x.id === payload.id);
+    if (index === -1) throw Error('[update] Bad action - attempting to update missing entity');
+
+    const entity = { ...result[index], ...payload };
+    result.splice(index, 1, entity);
+  }
+
+  return result;
+};
+
+/**
+ * Updates provided entities and returns updated state
+ * @param state Reducer State
+ * @param payload Action Payload
+ * @returns Updated State
+ */
+export const updateMany: Executor = (state, payload) => {
+  const result = [...state];
+
+  if (payload && Array.isArray(payload)) {
+    payload.forEach((entity) => {
+      const stateIndex = result.findIndex((x) => x.id === entity.id);
+      const payloadIndex = payload.findIndex((x) => x.id === entity.id);
+      if (stateIndex === -1 || stateIndex === -1)
+        throw Error('[updateMany] Bad action - attempting to update missing entity');
+
+      const updated = { ...result[stateIndex], ...payload[payloadIndex] };
+
+      result.splice(stateIndex, 1, updated);
+    });
+  }
+
+  return result;
+};
+
+/**
  * Operation/Executor map
  *
- * Provides an executor for each operation
+ * Matches operation with executor
  */
-const operationMap: Record<Operation, Executor> = {
-  add: (state, payload) => {
-    const result = [...state];
-
-    if (payload && !Array.isArray(payload)) {
-      const index = result.findIndex((x) => x.id === payload.id);
-
-      if (index > -1) throw Error('[add] Bad action - attempting to add already existing entity');
-
-      result.push(payload);
-    }
-
-    return result;
-  },
-  remove: (state, payload) => {
-    const result = [...state];
-
-    if (payload && !Array.isArray(payload)) {
-      const index = result.findIndex((x) => x.id === payload.id);
-
-      if (index === -1) throw Error('[remove] Bad action - attempting to remove missing entity');
-
-      result.splice(index, 1);
-    }
-
-    return result;
-  },
-  clear: (state) => {
-    const result = [...state];
-    result.splice(0, result.length);
-    return result;
-  },
-  addMany: (state, payload) => {
-    if (payload && Array.isArray(payload)) {
-      const result = [...state, ...payload];
-      return result;
-    }
-
-    return state;
-  },
-  update: (state, payload) => {
-    const result = [...state];
-
-    if (payload && !Array.isArray(payload)) {
-      const index = result.findIndex((x) => x.id === payload.id);
-      if (index === -1) throw Error('[update] Bad action - attempting to update missing entity');
-
-      const entity = { ...result[index], ...payload };
-      result.splice(index, 1, entity);
-    }
-
-    return result;
-  },
-  updateMany: (state, payload) => {
-    const result = [...state];
-
-    if (payload && Array.isArray(payload)) {
-      payload.forEach((entity) => {
-        const stateIndex = result.findIndex((x) => x.id === entity.id);
-        const payloadIndex = payload.findIndex((x) => x.id === entity.id);
-        if (stateIndex === -1 || stateIndex === -1)
-          throw Error('[updateMany] Bad action - attempting to update missing entity');
-
-        const updated = { ...result[stateIndex], ...payload[payloadIndex] };
-
-        result.splice(stateIndex, 1, updated);
-      });
-    }
-
-    return result;
-  },
+export const operationMap: Record<Operation, Executor> = {
+  add: add,
+  remove: remove,
+  clear: clear,
+  addMany: addMany,
+  update: update,
+  updateMany: updateMany,
 };
 
 /**
@@ -97,11 +143,11 @@ const operationMap: Record<Operation, Executor> = {
  * @param name Entity Reducer name
  * @returns Entity Reducer for use with useReducer
  */
-const getEntityReducer =
-  <T extends BaseEntity>(name: string) =>
+export const getEntityReducer =
+  <T extends BaseEntity>(name: string, operations: typeof operationMap) =>
   (state: State<T>, action: Action<T>) => {
     const { payload, operation } = action;
-    const executor = operationMap[operation];
+    const executor = operations[operation];
 
     if (!executor) throw Error(`[entityReducer: ${name}] Invalid operation provided`);
 
@@ -119,7 +165,7 @@ export const useEntityReducer = <T extends BaseEntity>(
   initialState: T[] = [],
   name: string
 ): EntityStateReducer<T> => {
-  const entityReducer = getEntityReducer<T>(name);
+  const entityReducer = getEntityReducer<T>(name, operationMap);
   const [state, dispatcher] = useReducer(entityReducer, initialState);
 
   const actionDispatcher = (operation: Operation, payload: Action<T>['payload']) =>

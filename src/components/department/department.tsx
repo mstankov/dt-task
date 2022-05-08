@@ -24,7 +24,7 @@ export const Department: FC<DepartmentProps> = ({
         {`${department.name} ${employees.filter((x) => x.department === department.id).length}`}
       </h2>
       <Checkbox
-        onClick={() => onClick(department)}
+        onChange={() => onClick(department)}
         checked={department.selected}
         className={styles.checkbox}
       />

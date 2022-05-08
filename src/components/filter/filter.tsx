@@ -11,6 +11,11 @@ export type FilterProps<T> = {
   label?: string;
 };
 
+/**
+ * Filter dropdown component
+ *
+ * Currently supports only 1 selection
+ */
 export const Filter = <T,>({ data, onChange, label, onClear, selected }: FilterProps<T>) => {
   const [visible, setVisible] = useState(false);
 

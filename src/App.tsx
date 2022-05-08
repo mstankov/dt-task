@@ -4,7 +4,7 @@ import { getBoardDataAsync } from './features/board/board.model';
 import { BoardData, Department, Employee } from './shared/types';
 import './App.scss';
 import { EntityStateReducer, useEntityReducer } from './entityAdapter/entityAdapter.utils';
-import { addMissingDepartment, addMissingDepartmentId } from './data/data.utils';
+import { normalizeDepartments, normalizeEmployees } from './data/data.utils';
 import { LoadingIndicator } from './components/loadingIndicator/loadingIndicator';
 
 export const EmployeeContext = createContext<EntityStateReducer<Employee> | null>(null);
@@ -29,8 +29,8 @@ const App: FC = () => {
       const [, empDispatcher] = employeeEntityReducer;
       const [, depDispatcher] = departmentEntityReducer;
 
-      empDispatcher('addMany', addMissingDepartmentId(data.organization.employees));
-      depDispatcher('addMany', addMissingDepartment(data.organization.departments));
+      empDispatcher('addMany', normalizeEmployees(data.organization.employees));
+      depDispatcher('addMany', normalizeDepartments(data.organization.departments));
     }
   }, [data]);
 
